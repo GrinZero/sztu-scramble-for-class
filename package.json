@@ -7,6 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
   },
+  "keywords": [
+    "sztu",
+    "scramble",
+    "class",
+    "抢课",
+    "深圳技术大学"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
