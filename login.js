@@ -162,7 +162,9 @@ class JwxtLogin {
       const finishLoginTime = Date.now();
       console.log("login use【" + (finishLoginTime - finishIndexTime) + "】ms");
       return res;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
   //DES加密
   static encryptByDES(message, key) {

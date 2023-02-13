@@ -32,6 +32,7 @@ const beforeStart = async () => {
     return cookies;
   };
   const getPublicLink = async (cookies) => {
+    console.info("getPublicLink");
     const getPublicHTML = async () => {
       try {
         return await got("https://jwxt.sztu.edu.cn/jsxsd/xsxk/xklc_list", {
@@ -62,6 +63,7 @@ const beforeStart = async () => {
     }
   };
   const getChooseLink = async (cookies, link) => {
+    console.info("getChooseLink");
     const fetchPublic = async () => {
       try {
         return await got(`https://jwxt.sztu.edu.cn${link}`, {
@@ -91,6 +93,7 @@ const beforeStart = async () => {
     }
   };
   const fetchChooseLink = async (cookies, link) => {
+    console.info("fetchChooseLink");
     const fetchLink = async () => {
       try {
         return await got(`https://jwxt.sztu.edu.cn${link}`, {
