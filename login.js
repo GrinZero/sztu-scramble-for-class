@@ -1,13 +1,13 @@
 const got = require("got");
 const tough = require("tough-cookie");
 const util = require("util");
+const CryptoJS = require("./cryptojs");
 
 class JwxtLogin {
   constructor(username, password) {
     var that = this;
     this.username = username;
-    this.password = password;
-    console.log(username, password);
+    this.password = JwxtLogin.encryptByDES(password);
     this.cookiejar = new tough.CookieJar();
     this.setCookie = util.promisify(
       that.cookiejar.setCookie.bind(that.cookiejar)
@@ -165,6 +165,15 @@ class JwxtLogin {
     } catch (error) {}
   }
   //DES加密
+  static encryptByDES(message, key) {
+    var key = "PassB01Il71";
+    var keyHex = CryptoJS.enc.Utf8.parse(key);
+    var encrypted = CryptoJS.DES.encrypt(message, keyHex, {
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7,
+    });
+    return encrypted.toString();
+  }
 }
 
 module.exports = JwxtLogin;
