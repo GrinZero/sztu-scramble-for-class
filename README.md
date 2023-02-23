@@ -15,7 +15,9 @@ pnpm install
 
 - username指学号
 - password指密码
-- 课程是指课程的ID，不是课程的名称。你可以在F12中找到它，如果你找不到......抱歉，选课没开始我没法更新这份README
+- 课程是指课程的ID，不是课程的名称。你可以在F12中找到它。
+<img width="1002" alt="image" src="https://user-images.githubusercontent.com/70185413/220826730-1af67c84-c2a2-40c1-88e6-6e939cb98df5.png">
+
 
 ### 3. 运行
 
