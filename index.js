@@ -32,7 +32,6 @@ const beforeStart = async () => {
     return cookies;
   };
   const getPublicLink = async (cookies) => {
-    console.info("getPublicLink");
     const getPublicHTML = async () => {
       try {
         return await got("https://jwxt.sztu.edu.cn/jsxsd/xsxk/xklc_list", {
@@ -57,16 +56,16 @@ const beforeStart = async () => {
     const $ = cheerio.load(html.body);
     const linkHTML = $("#attend_class tr > td:nth-child(4)").html();
     try {
-      return linkHTML.split('href="')[1].split('"')[0];
+      return linkHTML.split('toxk(\'')[1].split('\')')[0];
     } catch (e) {
       return null;
     }
   };
   const getChooseLink = async (cookies, link) => {
-    console.info("getChooseLink");
+    console.info("getChooseLink start");
     const fetchPublic = async () => {
       try {
-        return await got(`https://jwxt.sztu.edu.cn${link}`, {
+        return await got(`https://jwxt.sztu.edu.cn/jsxsd/xsxk/xklc_view?jx0502zbid=${link}`, {
           https: {
             rejectUnauthorized: false,
           },
@@ -93,7 +92,7 @@ const beforeStart = async () => {
     }
   };
   const fetchChooseLink = async (cookies, link) => {
-    console.info("fetchChooseLink");
+    console.info("fetchChooseLink",link);
     const fetchLink = async () => {
       try {
         return await got(`https://jwxt.sztu.edu.cn${link}`, {
@@ -119,11 +118,12 @@ const beforeStart = async () => {
   while (!link) {
     link = await getPublicLink(cookies);
   }
-
+  console.info("PublicLink", link);
   let chooseLink = await getChooseLink(cookies, link);
   while (!link) {
     link = await getChooseLink(cookies);
   }
+  console.info("chooseLink", chooseLink);
   await fetchChooseLink(cookies, chooseLink);
   return cookies;
 };
@@ -226,7 +226,7 @@ const main = async () => {
       console.log("chooseCourse timeout", count);
     }
     const timeout = ~~(Math.random() * 3000);
-    console.log("#timeout:", timeout < 1000 ? 1000 : timeout, "ms");
+    console.log("#delay:", timeout < 1000 ? 1000 : timeout, "ms");
     await sleep(timeout < 1000 ? 1000 : timeout);
   }
 };
