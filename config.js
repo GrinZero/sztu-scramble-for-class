@@ -1,8 +1,21 @@
-const username = "xxx";
-const password = "xxx";
+const username = "xxxxxx";
+const password = "xxxxxx";
 
-const jx0404idList = ["2022202312410", "2022202313166"];
+const jx0404List = [
+  {
+    id: "202220232002460",
+    name: "本科学位论文",
+    type: "本学期计划选课",
+  },
+  {
+    id: "202220232002460",
+    name: "计算机组本科学位论文成原理",
+    type: "公选课选课",
+  },
+];
 
 module.exports = {
-    username,password,jx0404idList
-}
+  username,
+  password,
+  jx0404List,
+};
