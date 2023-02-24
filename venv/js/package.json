@@ -1,0 +1,27 @@
+{
+  "name": "sztu-scramble-for-class",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install",
+    "start":"node ./index.js"
+  },
+  "keywords": [
+    "sztu",
+    "scramble",
+    "class",
+    "抢课",
+    "深圳技术大学"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "1.0.0-rc.12",
+    "got": "^11.8.2",
+    "husky": "^8.0.3",
+    "tough-cookie": "^4.0.0",
+    "util": "^0.12.4"
+  }
+}
