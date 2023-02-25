@@ -1,14 +1,9 @@
-import base64
-import json
-import os
-import sys
-import time
-import traceback
+import base64,json,os,sys,time,traceback,requests
 from configparser import ConfigParser
 import urllib3
+from Crypto.Cipher import DES
 urllib3.disable_warnings()
-import requests
-from pyDes import des, ECB, PAD_PKCS5
+
 conf = ConfigParser()
 conf.read("config.txt",encoding='utf-8')
 user = conf.get('mysql', 'username')
@@ -17,6 +12,11 @@ jx=conf.get('mysql', 'jx0404id')
 kc=conf.get('mysql', 'kcid')
 cno=conf.get('mysql', 'cno')
 cd=conf.get('mysql','cd')
+
+
+def pad(data, block_size=8):
+    length = block_size - (len(data) % block_size)
+    return data.encode(encoding='utf-8') + (chr(length) * length).encode(encoding='utf-8')
 class Auth:
     cookies = {}
     ok = False
@@ -62,6 +62,7 @@ class Auth:
             'op': 'login',
             'spAuthChainCode': 'cc2fdbc3599b48a69d5c82a665256b6b'
         }
+        #print(data['j_password'])
         resp = self.post('https://auth.sztu.edu.cn/idp/authcenter/ActionAuthChain', data)
         resp = resp.json()
         # print(resp)
@@ -90,15 +91,22 @@ class Auth:
         return mycookie
 
     @staticmethod
-    def encryptByDES(message):
-        secret_key = 'PassB01Il71'[0:8]  # 密钥
-        iv = secret_key  # 偏移
-        # secret_key:加密密钥，EBC:加密模式，iv:偏移, padmode:填充
-        des_obj = des(secret_key, ECB, iv, pad=None, padmode=PAD_PKCS5)
-        # 返回为字节
-        secret_bytes = des_obj.encrypt(message, padmode=PAD_PKCS5)
-        # 返回为base64
-        return base64.b64encode(secret_bytes)
+    def encryptByDES(message, key='PassB01Il71'):
+        key1 = key.encode('utf-8')[:8]
+        cipher = DES.new(key=key1, mode=DES.MODE_ECB)
+        encrypted_text = cipher.encrypt(pad(message, block_size=8))
+        encrypted_text = base64.b64encode(encrypted_text).decode('utf-8')
+        return encrypted_text
+    # @staticmethod
+    # def encryptByDES(message):
+    #     secret_key = 'PassB01Il71'[0:8]  # 密钥
+    #     iv = secret_key  # 偏移
+    #     # secret_key:加密密钥，EBC:加密模式，iv:偏移, padmode:填充
+    #     des_obj = des(secret_key, ECB, iv, pad=None, padmode=PAD_PKCS5)
+    #     # 返回为字节
+    #     secret_bytes = des_obj.encrypt(message, padmode=PAD_PKCS5)
+    #     # 返回为base64
+    #     return base64.b64encode(secret_bytes)
 
     def check_login(self):
         resp = self.get('https://jwxt.sztu.edu.cn/jsxsd/framework/xsMain.htmlx')
@@ -143,6 +151,7 @@ if __name__ == "__main__":
         try:
             a=Auth()
             q = a.login(user, pwd)
+            #print(q)
             a.logintoXK(cno)
             cnt=0
             sn=""
