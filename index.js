@@ -47,6 +47,7 @@ const beforeStart = async () => {
         });
       } catch (error) {
         console.error("getPublicList error", error);
+        throw error;
       }
     };
     let html = await getPublicHTML();
@@ -81,6 +82,7 @@ const beforeStart = async () => {
         );
       } catch (error) {
         console.error("fetchPublicLink error", error);
+        throw error;
       }
     };
     let html = await fetchPublic();
@@ -111,6 +113,7 @@ const beforeStart = async () => {
         });
       } catch (error) {
         console.error("fetchLink error", error);
+        throw error;
       }
     };
     const html = await fetchLink();
@@ -162,6 +165,7 @@ const start = async (cookies) => {
         .json();
     } catch (error) {
       console.error("getCourseList timeout");
+      throw error;
     }
   };
   const chooseCourse = async ({ jx02id, jx0404id, type = "公选课选课" }) => {
@@ -253,7 +257,7 @@ const main = async () => {
     if (jx0404Lists.length === 0) {
       break;
     }
-    if (count >= 10) {
+    if (count >= 3) {
       break;
     }
     try {
